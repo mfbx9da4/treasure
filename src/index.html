@@ -12,7 +12,6 @@
     <title>Treasure Game</title>
     <style>
       .container-fluid {
-        display: flex;
         position: relative;
       }
       #grid {
@@ -49,9 +48,14 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
-      <div class="info"></div>
-      <svg class="svg-container" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="container">
+      <div class="row">
+        <p>Guess where the treasure is. Try and keep your number of guesses under the optimal number. Can you think of a strategy for guessing the treasure in the least number of steps. PS there is some treasure waiting for you if you find it!</p>
+      </div>
+      <div class="row">
+        <div class="info col-sm-6"></div>
+        <div class="click-info col-sm-6"></div>
+      </div>
     </div>
 
     <div id="myModal" class="modal" tabindex="-1" role="dialog">

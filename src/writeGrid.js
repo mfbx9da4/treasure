@@ -23,7 +23,6 @@ export default function writeGrid(targetWidth, targetHeight, gridData, onClick) 
     .style("fill", d => d.fill || "#fff")
     .style("stroke", d => d.fill || "#222")
     .on('click', function onSquareClick (square) {
-      console.log(square)
       const res = onClick(square)
       square.click ++;
 
