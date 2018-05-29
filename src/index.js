@@ -245,7 +245,7 @@ function unitTestCases () {
         let id = `grid-1d-${testN}-${i}`
         let elem = createElement(`<div id="${id}" class="grid"></div>`)
         document.body.appendChild(elem)
-        basicGame(`#${id}`, testN, squareSize, 0, i, true)
+        setTimeout(basicGame.bind(null, `#${id}`, testN, squareSize, 0, i, true))
       }
     }
   }
@@ -263,7 +263,7 @@ function unitTestCases () {
           config.selector = `#${id}`
           config.treasureRow = row
           config.treasureCol = col
-          basic2DGame(config)
+          setTimeout(basic2DGame.bind(null, config))
         }
       }
     }
@@ -295,4 +295,4 @@ window.changeGif = function() {
   })
 }
 
-// changeGif()
+changeGif()
