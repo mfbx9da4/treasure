@@ -51,46 +51,60 @@ class WriteGrid {
     const self = this
     square.click ++;
 
-    var dim = square.width
-    var x = square.x
-    var y = square.y
+    const dim = square.width
+    const x = square.x
+    const y = square.y
 
-    var circleX = (dim / 2) + x
-    var circleY = (dim / 2) + y
-    var circleR = (dim / 2) - 4
+    const circleX = (dim / 2) + x
+    const circleY = (dim / 2) + y
+    const circleR = (dim / 2) - Math.floor(dim * 0.075)
+    const label = res.totalGuesses.toString()
+    const textSize = dim * 0.32
+    const textDx = -(dim / 13) * label.length
+    const textDy = dim / 8.3
 
-    var data = [{"x": circleX, "y": circleY, "r": circleR, "label": res.totalGuesses}]
+    const data = [{"x": circleX, "y": circleY, "r": circleR, "label": label}]
     /* Define the data for the circles */
-    var elem = this.grid.selectAll("g myCircleText")
+    const elem = this.grid.selectAll("g myCircleText")
       .data(data)
 
     /*Create and place the "blocks" containing the circle and the text */
-    var elemEnter = elem.enter()
+    const circleContainer = elem.enter()
       .append("g")
+      .attr("class", "circle")
+      .attr("row", square.row)
+      .attr("col", square.col)
       .attr("transform", function(circle){return "translate(" + circle.x + "," + circle.y + ")"})
 
-    var fill
+    let fill, stroke
     if (res.code === 1) {
+      // warmer
       fill = '#F56C4E'
+      stroke = 'rgb(153, 0, 0)'
     } else if (res.code === 2) {
+      // colder
       fill = '#2C93E8'
+      stroke = 'rgb(0, 0, 153)'
     } else {
+      // hit
       fill = '#6ab04c'
+      stroke = 'rgb(0, 153, 0)'
     }
 
     /*Create the circle for each block */
-    var circle = elemEnter.append("circle")
-      .attr("r", function(circle){return circle.r} )
-      .attr("stroke", "black")
+    const circle = circleContainer.append("circle")
+      .attr("r", circle => circle.r)
+      .attr("stroke", stroke)
       .attr("fill", fill)
 
     /* Create the text for each block */
-    elemEnter.append("text")
-      .attr("dx", function(circle){return 3.9 * -(circle.label.toString().length)})
-      .attr("dy", function(circle){return (6)})
+    circleContainer.append("text")
+      .attr("dx", textDx)
+      .attr("dy", textDy)
+      .attr("style", circle => `font-size: ${textSize}px`)
       .text(function(circle){return circle.label})
 
-    elemEnter.on('click', () => {
+    circleContainer.on('click', () => {
       this.onSquareClick(square)
     })
 
@@ -100,9 +114,6 @@ class WriteGrid {
 
   }
 }
-
-
-
 
 
 

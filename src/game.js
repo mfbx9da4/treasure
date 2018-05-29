@@ -11,6 +11,8 @@ class Game {
     this.treasureRow = treasureRow
     this.treasureCol = treasureCol
     this.totalGuesses = 0
+    this.totalCells = numCols * numRows
+    this.maxGuesses = 2 * Math.floor(Math.log2(this.totalCells))
     this.codes = codes
     this.inRange(treasureRow, treasureCol)
   }

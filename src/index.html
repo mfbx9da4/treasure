@@ -16,6 +16,12 @@
       }
       .grid {
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .grid svg {
+        margin: 0.5rem;
       }
       .square {
         border: 1px solid rgb(89, 89, 89);
@@ -46,8 +52,37 @@
           Treasure Game
         </a>
         <ul class="navbar-nav mr-auto">
+
           <li class="nav-item">
-            <a class="nav-link" href="https://docs.google.com/presentation/d/e/2PACX-1vRBbkuDdhR95yGCsAGBmhvL_NXgW0LCnIzM9OO1b-P47Jl2WxpUbKC93f7dI47Hdr7J7Nxjp1ZMi1cF/pub?start=false&loop=false&delayms=3000">Slides <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/">Simple Game</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Play
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/?easy">Easy - 1 Dimension</a>
+              <a class="dropdown-item" href="/?med">Medium</a>
+              <a class="dropdown-item" href="/?hard">Hard</a>
+              <a class="dropdown-item" href="/?extreme">Very Hard</a>
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Computer Solver
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/?test1d">1 Dimension</a>
+              <a class="dropdown-item" href="/?test2d">2 Dimension</a>
+              <a class="dropdown-item" href="/?testbig">Hard</a>
+              <a class="dropdown-item" href="/?testhuge">Very Hard</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="https://docs.google.com/presentation/d/e/2PACX-1vRBbkuDdhR95yGCsAGBmhvL_NXgW0LCnIzM9OO1b-P47Jl2WxpUbKC93f7dI47Hdr7J7Nxjp1ZMi1cF/pub?start=false&loop=false&delayms=3000">Slides</a>
           </li>
         </ul>
       </div>
@@ -55,7 +90,14 @@
 
     <div class="container">
       <div class="row">
-        <p>Guess where the treasure is. Try and keep your number of guesses under the optimal number. Can you think of a strategy / algorithm for guessing the treasure in the least number of steps. PS there is some treasure waiting for you if you find it! <a href="https://docs.google.com/presentation/d/e/2PACX-1vRBbkuDdhR95yGCsAGBmhvL_NXgW0LCnIzM9OO1b-P47Jl2WxpUbKC93f7dI47Hdr7J7Nxjp1ZMi1cF/pub?start=false&loop=false&delayms=3000">Check out the explanation here</a></p>
+        <p>
+          <ul>
+            <li>💰 Guess where the treasure is.</li>
+            <li>🔴 Red means your guess was warmer than your <b>previous</b> guess.</li>
+            <li>🔵 Blue means your guess was colder than your <b>previous</b> guess.</li>
+          </ul>
+          <a href="https://docs.google.com/presentation/d/e/2PACX-1vRBbkuDdhR95yGCsAGBmhvL_NXgW0LCnIzM9OO1b-P47Jl2WxpUbKC93f7dI47Hdr7J7Nxjp1ZMi1cF/pub?start=false&loop=false&delayms=3000">Check out the motivation slides here.</a>
+        </p>
       </div>
       <div class="row">
         <div class="info col-sm-6"></div>

@@ -21,97 +21,102 @@ class Solver {
   binarySearch = () => {
     const firstRow = 0
     const firstCol = 0
+    let hit, ansCol, ansRow
 
     const guessCol = (col) => {
       return this.guess(firstRow, col)
     }
+
+    const guessRow = (fixedCol, row) => {
+      return this.guess(row, fixedCol)
+    }
+
     // guess in first row
-    return this.bisect(firstCol, this.numCols - 1, guessCol)
+    [hit, ansCol] = this.bisect(firstCol, this.numCols - 1, guessCol)
+    if (hit) {
+      return [firstRow, ansCol]
+    }
+    [hit, ansRow] = this.bisect(firstRow, this.numRows - 1, guessRow.bind(null, ansCol))
+    if (!hit) {
+      throw new Error('Solver could not find treasure')
+    }
+    return [ansRow, ansCol]
   }
 
   bisect (lo, hi, guess) {
     let prevWasColder = true
     let prevWasAtLo = false
-    let ans, isOdd, guessAt, mid, prev, prevWasBelow, width, other, prevWasAbove
+    let ans, isOdd, guessAt, mid, prev,
+      prevWasBelow, width, other, prevWasAbove,
+      isWarmer, isColder
     const codes = this.game.codes
     let count = 0
+    const verbose = true
 
     while (lo < hi) {
-      width = (hi - lo)
-
-      mid = Math.floor(width / 2) + lo
-
-      if (this.game.totalGuesses > 12) {
+      if (this.game.totalGuesses > this.maxGuesses) {
         throw new Error('Solver: Too many guesses')
       }
 
-      // TODO: simplify
-      // if (!prevWasColder && (prevWasAtLo || !prevWasBelow)) {
-      //   prevWasAtLo = false
-      //   guessAt = hi
-      // } else {
-      //   prevWasAtLo = true
-      //   guessAt = lo
-      //   console.log((this.game.totalGuesses + 1).toString(), 'guessAt lo', guessAt)
-      // }
-
-      // || prevWasAbove
-      // if (prevWasColder || !(prevWasAtLo || prevWasAbove)) {
-
-      if (prevWasColder || !prevWasAtLo) {
-        // If the previous was colder or
-        // the previous was at hi bound
-        // guess lo
-        prevWasAtLo = true
-        guessAt = lo
-        console.log((this.game.totalGuesses + 1).toString(), 'guessAt lo', guessAt)
-      } else {
+      if (prevWasAtLo) {
+        // Alternate guess at lo or hi bound
         prevWasAtLo = false
         guessAt = hi
+      } else {
+        prevWasAtLo = true
+        guessAt = lo
+        if (verbose) { console.log((this.game.totalGuesses + 1).toString(), 'guessAt lo', guessAt) }
       }
 
       ans = guess(guessAt)
 
       if (ans === codes.hit) {
-        console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, 'hit')
-        return guessAt
+        if (verbose) { console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, 'hit') }
+        return [true, guessAt]
       }
 
       if (prevWasColder) {
-        console.log('prevWasColder', prevWasColder)
+        // If prev was colder, next guess must be hotter.
+        // So we have no info to adjust bounds.
         prevWasColder = false
         prev = guessAt
         continue
       }
 
-      isOdd = (hi - lo + 1) % 2 !== 0
+      width = (hi - lo)
+      isOdd = width % 2 === 0
+      mid = Math.floor(width / 2) + lo
       prevWasBelow = prev < guessAt
       prevWasAbove = !prevWasBelow
-      console.log('prevWasBelow', prevWasBelow, prev, guessAt)
+      isWarmer = ans === codes.warmer
+      isColder = ans === codes.colder
 
-      if (prevWasBelow) {
-        if (ans === codes.warmer) {
-          lo = isOdd ? mid : mid + 1
-          console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, prevWasBelow ? 'prevWasBelow' : 'prevWasAbove', 'warmer |', 'lo is now', lo)
-        } else if (ans === codes.colder) {
-          prevWasColder = true
-          hi = isOdd ? mid - 1 : mid
-          console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, prevWasBelow ? 'prevWasBelow' : 'prevWasAbove', 'colder | hi is now', hi)
-        }
-      } else {
-        if (ans === codes.warmer) {
-          hi = mid
-          console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, prevWasBelow ? 'prevWasBelow' : 'prevWasAbove', 'warmer |', 'hi is now', hi)
-        } else if (ans === codes.colder) {
-          prevWasColder = true
-          lo = mid + 1
-          console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, prevWasBelow ? 'prevWasBelow' : 'prevWasAbove', 'colder | lo is now', lo)
-        }
+      if (isWarmer && prevWasBelow) {
+        // [1 m 2]    odd
+        // [1 m _ 2]  even
+        lo = isOdd ? mid : mid + 1
+        if (verbose) { console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, 'isWarmer lo is now', lo) }
+      } else if (isWarmer && prevWasAbove) {
+        // [2 m 1]    odd
+        // [2 m _ 1]  even
+        hi = mid
+        if (verbose) { console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, 'isWarmer hi is now', hi) }
+      } else if (isColder && prevWasBelow) {
+        // [1 m 2]    odd
+        // [1 m _ 2]  even
+        hi = isOdd ? mid - 1 : mid
+        if (verbose) { console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, 'isColder hi is now', hi) }
+      } else if (isColder && prevWasAbove) {
+        // [2 m 1]    odd
+        // [2 m _ 1]  even
+        lo = mid + 1
+        if (verbose) { console.log(this.game.totalGuesses.toString(), 'guessAt', guessAt, 'isColder lo is now', lo) }
       }
+
       prev = guessAt
+      prevWasColder = isColder
     }
-    throw new Error('not found')
-    return lo
+    return [false, lo]
   }
 
   bruteForce = () => {
