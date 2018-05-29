@@ -51,7 +51,7 @@ class Solver {
       isWarmer, isColder
     const codes = this.game.codes
     let count = 0
-    const verbose = true
+    const verbose = false
 
     while (lo < hi) {
       if (this.game.totalGuesses > this.maxGuesses) {

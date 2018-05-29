@@ -25,7 +25,7 @@ function onChangeBounds (lo, hi) {
 }
 
 function createGame (config) {
-  console.log('🎁', config)
+  // console.log('🎁', config)
   const { selector, numRows, numCols, treasureRow, treasureCol, dim, targetWidth, targetHeight, shouldSolve } = config
   window.game = new Game(numRows, numCols, treasureRow, treasureCol)
   window.gridData = buildGridData(numRows, numCols, treasureRow, treasureCol, dim)
@@ -46,7 +46,7 @@ function writeInfo (numRows, numCols) {
   const actualCells = numRows * numCols
   const expectedMax = Math.ceil(2 * Math.log2(actualCells))
   const expectedMin = Math.ceil(Math.log2(actualCells))
-  console.log('Optimal Guesses', expectedMin, expectedMax)
+  // console.log('Optimal Guesses', expectedMin, expectedMax)
 
   const info = document.querySelector('.info')
   info.innerHTML = `<div>Sqaures <strong>${actualCells}</strong> Optimal guesses <strong>${expectedMin} to ${expectedMax}</strong></div>`
@@ -207,6 +207,12 @@ function createElement (htmlString) {
 }
 
 function main () {
+  if (location.search === '?about') {
+    document.querySelector('.about').style.display = 'block'
+    document.querySelector('.instructions').style.display = 'none'
+    return
+  }
+
   if (!unitTestCases()) {
     let hasGame = false
     if (location.search.indexOf('easy') > -1) {
@@ -232,7 +238,7 @@ function main () {
 function unitTestCases () {
   if (location.search.indexOf('test') === -1) return
 
-  let squareSize = 20
+  let squareSize = 50
   let config = {
     dim: squareSize,
     shouldSolve: true
@@ -252,7 +258,7 @@ function unitTestCases () {
 
   if (location.search.indexOf('2d') > -1) {
     // Two dimension
-    for (let testN = 2; testN < 13; testN ++) {
+    for (let testN = 2; testN < 9; testN ++) {
       config.numRows = testN
       config.numCols = testN
       for (let row = 0; row < testN; row ++) {
@@ -263,7 +269,8 @@ function unitTestCases () {
           config.selector = `#${id}`
           config.treasureRow = row
           config.treasureCol = col
-          setTimeout(basic2DGame.bind(null, config))
+          let copy = Object.assign({}, config)
+          setTimeout(basic2DGame.bind(null, copy))
         }
       }
     }
