@@ -14,7 +14,7 @@
       .container-fluid {
         position: relative;
       }
-      #grid {
+      .grid {
         text-align: center;
       }
       .square {
@@ -45,12 +45,17 @@
         <a class="navbar-brand" href="/">
           Treasure Game
         </a>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://docs.google.com/presentation/d/e/2PACX-1vRBbkuDdhR95yGCsAGBmhvL_NXgW0LCnIzM9OO1b-P47Jl2WxpUbKC93f7dI47Hdr7J7Nxjp1ZMi1cF/pub?start=false&loop=false&delayms=3000">Slides <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
       </div>
     </nav>
 
     <div class="container">
       <div class="row">
-        <p>Guess where the treasure is. Try and keep your number of guesses under the optimal number. Can you think of a strategy for guessing the treasure in the least number of steps. PS there is some treasure waiting for you if you find it!</p>
+        <p>Guess where the treasure is. Try and keep your number of guesses under the optimal number. Can you think of a strategy / algorithm for guessing the treasure in the least number of steps. PS there is some treasure waiting for you if you find it! <a href="https://docs.google.com/presentation/d/e/2PACX-1vRBbkuDdhR95yGCsAGBmhvL_NXgW0LCnIzM9OO1b-P47Jl2WxpUbKC93f7dI47Hdr7J7Nxjp1ZMi1cF/pub?start=false&loop=false&delayms=3000">Check out the explanation here</a></p>
       </div>
       <div class="row">
         <div class="info col-sm-6"></div>
@@ -79,7 +84,8 @@
       </div>
     </div>
 
-    <div id="grid"></div>
+    <div id="grid" class="grid"></div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -96,7 +102,6 @@
 
       gtag('config', 'UA-40588403-7');
     </script>
-
   </body>
 </html>
 

@@ -8,7 +8,7 @@ module.exports = {
     // polyfills
     require.resolve('./polyfills'),
     // app entry
-    './src/index.js',
+    './src/index.js'
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),

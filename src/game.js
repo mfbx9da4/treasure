@@ -1,4 +1,4 @@
-const consts = {
+const codes = {
   hit: 0,
   warmer: 1,
   colder: 2
@@ -11,21 +11,31 @@ class Game {
     this.treasureRow = treasureRow
     this.treasureCol = treasureCol
     this.totalGuesses = 0
+    this.codes = codes
+    this.inRange(treasureRow, treasureCol)
   }
 
-  guess(row, col) {
+  inRange (row, col) {
+    if (row > this.numRows - 1 || col > this.numCols - 1 || row < 0 || col < 0) {
+      throw new Error('Game: Out Of Bounds')
+    }
+    return true
+  }
+
+  guess (row, col) {
+    this.inRange(row, col)
     const deltaRow = Math.abs(this.treasureRow - row)
     const deltaCol = Math.abs(this.treasureCol - col)
     const deltaTotal = deltaRow + deltaCol
     let res
     if (deltaTotal === 0) {
-      res = consts.hit
+      res = codes.hit
     } else if (!this.prevDeltaTotal) {
-      res = consts.warmer
+      res = codes.warmer
     } else if (deltaTotal <= this.prevDeltaTotal) {
-      res = consts.warmer
+      res = codes.warmer
     } else {
-      res = consts.colder
+      res = codes.colder
     }
     this.prevDeltaTotal = deltaTotal;
     this.totalGuesses ++
@@ -34,15 +44,15 @@ class Game {
 
   codeToString = (code) => {
     const strings = {}
-    for (let key in consts) {
-      strings[consts[key]] = key
+    for (let key in codes) {
+      strings[codes[key]] = key
     }
     return strings[code]
   }
 }
 
 export {
-  consts,
+  codes,
   Game
 }
 
