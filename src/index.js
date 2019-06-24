@@ -49,7 +49,7 @@ function writeInfo (numRows, numCols) {
   // console.log('Optimal Guesses', expectedMin, expectedMax)
 
   const info = document.querySelector('.info')
-  info.innerHTML = `<div>Sqaures <strong>${actualCells}</strong> Optimal guesses <strong>${expectedMin} to ${expectedMax}</strong></div>`
+  info.innerHTML = `<div>Squares <strong>${actualCells}</strong> Optimal guesses <strong>${expectedMin} to ${expectedMax}</strong></div>`
 }
 
 function calcDimensionsFromWindow (cells, dim) {
@@ -68,7 +68,7 @@ function calcDimensionsFromWindow (cells, dim) {
   // console.log('🎬')
   // console.log('numCols, numRows', numCols, numRows)
   // console.log('actual years', actualCells / 365)
-  // console.log('sqaures', actualCells)
+  // console.log('squares', actualCells)
   return { targetWidth, targetHeight, numRows, numCols, actualCells }
 }
 
