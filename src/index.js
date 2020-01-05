@@ -1,35 +1,59 @@
 import WriteGrid from './writeGrid'
 import buildGridData from './buildGridData'
 import Solver from './solve'
-import {consts, Game} from './game'
+import { consts, Game } from './game'
 
 function onClickCell(game, cell) {
   console.log('cell', cell)
   const code = game.guess(cell.row, cell.col)
   const div = document.querySelector('.click-info')
-  div.innerHTML = `<code><strong>${game.codeToString(code)}</strong></code> Guess count <strong>${game.totalGuesses}</strong> `
+  div.innerHTML = `<code><strong>${game.codeToString(
+    code
+  )}</strong></code> Guess count <strong>${game.totalGuesses}</strong> `
   if (code === 0) {
     setTimeout(function() {
       $('#myModal').modal()
     }, 200)
   }
-  return {totalGuesses: game.totalGuesses, code}
+  return { totalGuesses: game.totalGuesses, code }
 }
 
-function onGuess (grid, row, col, res) {
+function onGuess(grid, row, col, res) {
   grid.drawGuess(row, col, res)
 }
 
-function onChangeBounds (lo, hi) {
+function onChangeBounds(lo, hi) {
   grid.drawBounds(lo, hi)
 }
 
-function createGame (config) {
+function createGame(config) {
   // console.log('🎁', config)
-  const { selector, numRows, numCols, treasureRow, treasureCol, dim, targetWidth, targetHeight, shouldSolve } = config
+  const {
+    selector,
+    numRows,
+    numCols,
+    treasureRow,
+    treasureCol,
+    dim,
+    targetWidth,
+    targetHeight,
+    shouldSolve,
+  } = config
   window.game = new Game(numRows, numCols, treasureRow, treasureCol)
-  window.gridData = buildGridData(numRows, numCols, treasureRow, treasureCol, dim)
-  window.grid = new WriteGrid(selector, targetWidth, targetHeight, gridData, onClickCell.bind(null, game))
+  window.gridData = buildGridData(
+    numRows,
+    numCols,
+    treasureRow,
+    treasureCol,
+    dim
+  )
+  window.grid = new WriteGrid(
+    selector,
+    targetWidth,
+    targetHeight,
+    gridData,
+    onClickCell.bind(null, game)
+  )
   if (shouldSolve) {
     const solver = new Solver(game, numRows, numCols, onGuess.bind(null, grid))
     const ans = solver.solve()
@@ -41,7 +65,7 @@ function createGame (config) {
   }
 }
 
-function writeInfo (numRows, numCols) {
+function writeInfo(numRows, numCols) {
   // TODO: double check
   const actualCells = numRows * numCols
   const expectedMax = Math.ceil(2 * Math.log2(actualCells))
@@ -52,7 +76,7 @@ function writeInfo (numRows, numCols) {
   info.innerHTML = `<div>Sqaures <strong>${actualCells}</strong> Optimal guesses <strong>${expectedMin} to ${expectedMax}</strong></div>`
 }
 
-function calcDimensionsFromWindow (cells, dim) {
+function calcDimensionsFromWindow(cells, dim) {
   const windowWidth = $(window).width()
   let targetWidth = windowWidth - 100
   let numCols = Math.floor(targetWidth / dim)
@@ -62,7 +86,7 @@ function calcDimensionsFromWindow (cells, dim) {
     numRows = 1
     numCols = cells
   }
-  targetWidth  = dim * numCols
+  targetWidth = dim * numCols
   const targetHeight = numRows * dim
   const actualCells = numCols * numRows
   // console.log('🎬')
@@ -72,8 +96,21 @@ function calcDimensionsFromWindow (cells, dim) {
   return { targetWidth, targetHeight, numRows, numCols, actualCells }
 }
 
-function basicGame (selector, cells, dim, treasureRow = null, treasureCol = null, shouldSolve) {
-  const { targetWidth, targetHeight, numRows, numCols, actualCells } = calcDimensionsFromWindow(cells, dim)
+function basicGame(
+  selector,
+  cells,
+  dim,
+  treasureRow = null,
+  treasureCol = null,
+  shouldSolve
+) {
+  const {
+    targetWidth,
+    targetHeight,
+    numRows,
+    numCols,
+    actualCells,
+  } = calcDimensionsFromWindow(cells, dim)
 
   const random = randomTreasure(numRows, numCols)
 
@@ -82,7 +119,6 @@ function basicGame (selector, cells, dim, treasureRow = null, treasureCol = null
   } else if (treasureCol === null || treasureCol > numCols - 1) {
     treasureCol = random[1]
   }
-
 
   writeInfo(numRows, numCols)
   const config = {
@@ -94,32 +130,31 @@ function basicGame (selector, cells, dim, treasureRow = null, treasureCol = null
     dim,
     targetWidth,
     targetHeight,
-    shouldSolve
+    shouldSolve,
   }
   createGame(config)
 }
 
-function basic2DGame (config) {
+function basic2DGame(config) {
   config.targetWidth = config.numCols * config.dim
   config.targetHeight = config.numRows * config.dim
   writeInfo(config.numRows, config.numCols)
   createGame(config)
 }
 
-
-function randomTreasure (numRows, numCols) {
+function randomTreasure(numRows, numCols) {
   return [
     Math.floor(Math.random() * numRows),
-    Math.floor(Math.random() * numCols)
+    Math.floor(Math.random() * numCols),
   ]
 }
 
-function bigGame () {
+function bigGame() {
   const config = {
     selector: '#grid',
     numRows: 50,
     numCols: 50,
-    dim: 13
+    dim: 13,
   }
   var [row, col] = randomTreasure(config.numRows, config.numCols)
   config.treasureRow = row
@@ -127,12 +162,12 @@ function bigGame () {
   basic2DGame(config)
 }
 
-function vbigGame () {
+function vbigGame() {
   const config = {
     selector: '#grid',
     numRows: 170,
     numCols: 170,
-    dim: 6
+    dim: 6,
   }
   var [row, col] = randomTreasure(config.numRows, config.numCols)
   config.treasureRow = row
@@ -140,12 +175,12 @@ function vbigGame () {
   basic2DGame(config)
 }
 
-function medGame () {
+function medGame() {
   const config = {
     selector: '#grid',
     numRows: 9,
     numCols: 9,
-    dim: 50
+    dim: 50,
   }
   var [row, col] = randomTreasure(config.numRows, config.numCols)
   config.treasureRow = row
@@ -153,12 +188,12 @@ function medGame () {
   basic2DGame(config)
 }
 
-function easyGame () {
+function easyGame() {
   const config = {
     selector: '#grid',
     numRows: 1,
     numCols: 9,
-    dim: 50
+    dim: 50,
   }
   var [row, col] = randomTreasure(config.numRows, config.numCols)
   config.treasureRow = row
@@ -166,10 +201,10 @@ function easyGame () {
   basic2DGame(config)
 }
 
-function vbigGameTest () {
+function vbigGameTest() {
   const config = {
     shouldSolve: 1,
-    dim: 6
+    dim: 6,
   }
   config.numRows = 170
   config.numCols = 170
@@ -183,7 +218,7 @@ function vbigGameTest () {
   basic2DGame(config)
 }
 
-function bigGameTest () {
+function bigGameTest() {
   const config = {
     shouldSolve: 1,
     dim: 13,
@@ -200,13 +235,13 @@ function bigGameTest () {
   basic2DGame(config)
 }
 
-function createElement (htmlString) {
-  const div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-  return div.firstChild;
+function createElement(htmlString) {
+  const div = document.createElement('div')
+  div.innerHTML = htmlString.trim()
+  return div.firstChild
 }
 
-function main () {
+function main() {
   if (location.search === '?about') {
     document.querySelector('.about').style.display = 'block'
     document.querySelector('.instructions').style.display = 'none'
@@ -232,37 +267,38 @@ function main () {
       medGame()
     }
   }
-
 }
 
-function unitTestCases () {
+function unitTestCases() {
   if (location.search.indexOf('test') === -1) return
 
   let squareSize = 50
   let config = {
     dim: squareSize,
-    shouldSolve: true
+    shouldSolve: true,
   }
 
   if (location.search.indexOf('1d') > -1) {
     // One dimension
-    for (let testN = 2; testN < 15; testN ++) {
-      for (let i = 0; i < testN; i ++) {
+    for (let testN = 2; testN < 15; testN++) {
+      for (let i = 0; i < testN; i++) {
         let id = `grid-1d-${testN}-${i}`
         let elem = createElement(`<div id="${id}" class="grid"></div>`)
         document.body.appendChild(elem)
-        setTimeout(basicGame.bind(null, `#${id}`, testN, squareSize, 0, i, true))
+        setTimeout(
+          basicGame.bind(null, `#${id}`, testN, squareSize, 0, i, true)
+        )
       }
     }
   }
 
   if (location.search.indexOf('2d') > -1) {
     // Two dimension
-    for (let testN = 2; testN < 9; testN ++) {
+    for (let testN = 2; testN < 9; testN++) {
       config.numRows = testN
       config.numCols = testN
-      for (let row = 0; row < testN; row ++) {
-        for (let col = 0; col < testN; col ++) {
+      for (let row = 0; row < testN; row++) {
+        for (let col = 0; col < testN; col++) {
           var id = `grid-2d-${testN}-T-${row}-${col}`
           var elem = createElement(`<div id="${id}" class="grid"></div>`)
           document.body.appendChild(elem)
@@ -291,14 +327,17 @@ main()
 //javascript, jQuery
 window.changeGif = function() {
   setTimeout(function() {
-    var xhr = fetch("http://api.giphy.com/v1/gifs/random?api_key=miQBaqnQCA7W6xeKNXZqT6BHlEJRQhlv&tag=funny");
-    return xhr.then(response => response.json())
-    .then(response => {
-      var image = new Image()
-      image.src = response.data.embed_url
-      $('.congrats-image').attr('src', image.src)
-      return response
-    })
+    var xhr = fetch(
+      'https://api.giphy.com/v1/gifs/random?api_key=miQBaqnQCA7W6xeKNXZqT6BHlEJRQhlv&tag=funny'
+    )
+    return xhr
+      .then((response) => response.json())
+      .then((response) => {
+        var image = new Image()
+        image.src = response.data.embed_url
+        $('.congrats-image').attr('src', image.src)
+        return response
+      })
   })
 }
 
