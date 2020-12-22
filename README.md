@@ -17,5 +17,4 @@ Binary search strategy can be summarized by: dividing the grid in half each time
 
 I would like to turn this in to a talk at some point and create a parallel to advent calendars. Here are [some slides](https://docs.google.com/presentation/d/e/2PACX-1vRBbkuDdhR95yGCsAGBmhvL_NXgW0LCnIzM9OO1b-P47Jl2WxpUbKC93f7dI47Hdr7J7Nxjp1ZMi1cF/pub?start=false&loop=false&delayms=3000).
 
-Built with ❤️ by David Alberto Adler. Source code on github.
 
