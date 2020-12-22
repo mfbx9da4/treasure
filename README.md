@@ -11,7 +11,7 @@
 
 
 
-## Explanation
+## Description
 
 The aim of this game is to demonstrate the power of [binary search algorithms](https://en.wikipedia.org/wiki/Binary_search_algorithm) to novice programmers. The user should first try and create a strategy for finding the treasure. Most likely the user will stumble upon a strategy very similar to binary search. Try starting with a [one dimensional array first](http://treasure.surge.sh/?easy).
 
